@@ -1,0 +1,118 @@
+﻿@page "/"
+
+@inject IHxMessengerService Messenger
+@inject IJSRuntime JsRuntime
+@inject ILogger<Home> Logger
+
+<PageTitle>Polyglot</PageTitle>
+
+<h1 style="text-align: center">Polyglot</h1>
+<h3 style="text-align: center">Read-It-Later Format Conversion Tool</h3>
+<br /><br />
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm" />
+        <div class="col-lg">
+            <HxSelect TItem="string"
+                      TValue="string"
+                      Label="Input Format"
+                      Data="@_inputFormats"
+                      @bind-Value="@_inputFormat"
+                      TextSelector="@(p => p.ToString())"
+                      ValueSelector="@(p => p.ToString())"
+                      Nullable="true"
+                      NullText="-select format-"
+                      NullDataText="Loading options..." />
+            <p />
+            <HxSelect TItem="string"
+                      TValue="string"
+                      Label="Output Format"
+                      Data="@_outputFormats"
+                      @bind-Value="@_outputFormat"
+                      TextSelector="@(p => p.ToString())"
+                      ValueSelector="@(p => p.ToString())"
+                      Nullable="true"
+                      NullText="-select format-"
+                      NullDataText="Loading options..." />
+            <p />
+            @if (_fileUploading)
+            {
+                <HxSpinner Color="ThemeColor.Primary" />
+            }
+            else
+            {
+                <HxInputFile Label="Upload File" Accept=".csv, .json" OnChange="ConvertFile" MaxFileSize="10000000" Multiple="false" />
+            }
+        </div>
+        <div class="col-sm" />
+    </div>
+</div>
+
+@code {
+    private string _fileName = String.Empty;
+    private bool _fileUploading;
+    private IEnumerable<string> _inputFormats = Enumerable.Empty<string>();
+    private IEnumerable<string> _outputFormats = Enumerable.Empty<string>();
+    private string? _inputFormat;
+    private string? _outputFormat;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _inputFormats = Enum.GetValues(typeof(InputFormats)).Cast<InputFormats>().Select(v => v.ToString());
+        _outputFormats = Enum.GetValues(typeof(OutputFormats)).Cast<OutputFormats>().Select(v => v.ToString());
+    }
+
+    private async Task ConvertFile(InputFileChangeEventArgs e)
+    {
+        if (String.IsNullOrEmpty(_inputFormat))
+        {
+            Messenger.AddError("No input format specified!");
+
+            return;
+        }
+
+        if (String.IsNullOrEmpty(_outputFormat))
+        {
+            Messenger.AddError("No output format specified!");
+
+            return;
+        }
+
+        _fileName = _outputFormat switch
+        {
+            "GoodLinks" => "goodlinks.json",
+            "Instapaper" => "instapaper.csv",
+            "Omnivore" => "omnivore.csv",
+            "Raindrop" => "raindrop.csv",
+            _ => _fileName
+        };
+
+        _fileUploading = true;
+
+        foreach (IBrowserFile file in e.GetMultipleFiles(1))
+        {
+            try
+            {
+                using MemoryStream stream = new();
+                await file.OpenReadStream(maxAllowedSize: 10000000).CopyToAsync(stream);
+                Stream result = ConversionService.ConvertFile(stream, _inputFormat, _outputFormat);
+
+                using var streamRef = new DotNetStreamReference(stream: result);
+                await JsRuntime.InvokeVoidAsync("downloadFileFromStream", _fileName, streamRef);
+
+                Messenger.AddInformation($"Successfully converted file from {_inputFormat} to {_outputFormat} format.");
+                _fileUploading = false;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, ex.Message);
+                Messenger.AddError($"Error converting file from {_inputFormat} to {_outputFormat} format!");
+            }
+        }
+
+        _fileUploading = false;
+    }
+
+}

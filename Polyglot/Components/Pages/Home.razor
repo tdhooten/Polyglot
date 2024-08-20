@@ -103,7 +103,6 @@
                 await JsRuntime.InvokeVoidAsync("downloadFileFromStream", _fileName, streamRef);
 
                 Messenger.AddInformation($"Successfully converted file from {_inputFormat} to {_outputFormat} format.");
-                _fileUploading = false;
             }
             catch (Exception ex)
             {

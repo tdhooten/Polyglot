@@ -187,7 +187,7 @@ public static class ConversionService
             if (link.Archived) outputLink.state = "ARCHIVED";
 
             if (link.Tags.Count != 0)
-                outputLink.labels = $"[{String.Join(",", link.Tags.Select(i => $"\"\"{i}\"\""))}]";
+                outputLink.labels = $"[{String.Join(",", link.Tags.Select(i => $"\"{i}\""))}]";
 
             outputLinks.Add(outputLink);
         }

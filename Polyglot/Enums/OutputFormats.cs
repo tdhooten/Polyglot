@@ -5,5 +5,6 @@ public enum OutputFormats
     GoodLinks,
     Instapaper,
     Omnivore,
-    Raindrop
+    Raindrop,
+    Readwise
 }

@@ -28,6 +28,7 @@ public static class ConversionService
             "Instapaper" => ExportInstapaper(processedLinks),
             "Omnivore" => ExportOmnivore(processedLinks),
             "Raindrop" => ExportRaindrop(processedLinks),
+            "Readwise" => ExportReadwise(processedLinks),
             _ => outputFile
         };
 
@@ -221,6 +222,34 @@ public static class ConversionService
 
             if (link.Tags.Count != 0)
                 outputLink.tags = String.Join(",", link.Tags);
+
+            outputLinks.Add(outputLink);
+        }
+
+        using var outputStream = new MemoryStream();
+        using var writer = new StreamWriter(outputStream);
+        using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
+        csvWriter.WriteRecords(outputLinks);
+        csvWriter.Flush();
+
+        return outputStream.ToArray();
+    }
+
+    private static byte[] ExportReadwise(IEnumerable<MasterModel> processedLinks)
+    {
+        List<ReadwiseModel> outputLinks = [];
+
+        foreach (MasterModel link in processedLinks)
+        {
+            var outputLink = new ReadwiseModel
+            {
+                URL = link.Url
+            };
+
+            var createdUtc = new DateTimeOffset(link.DateSaved);
+            outputLink.Timestamp = createdUtc.ToUnixTimeSeconds().ToString();
+
+            if (link.Archived) outputLink.Folder = "Archive";
 
             outputLinks.Add(outputLink);
         }

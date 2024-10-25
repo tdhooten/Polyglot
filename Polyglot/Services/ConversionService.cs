@@ -157,6 +157,7 @@ public static class ConversionService
             {
                 starred = link.Favorite,
                 tags = [.. link.Tags],
+                title = link.Title,
                 url = link.Url.Replace("http:", "https:")
             };
 
@@ -243,6 +244,7 @@ public static class ConversionService
         {
             var outputLink = new ReadwiseModel
             {
+                Title = link.Title,
                 URL = link.Url
             };
 

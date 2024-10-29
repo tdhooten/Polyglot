@@ -1,6 +1,6 @@
 ﻿namespace Polyglot.Models;
 
-public class OmnivoreModel
+public class OmnivoreExportModel
 {
     public string url { get; set; } = String.Empty;
     public string state { get; set; } = "SUCCEEDED";

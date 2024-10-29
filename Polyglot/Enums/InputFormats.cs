@@ -4,5 +4,6 @@ public enum InputFormats
 {
     GoodLinks,
     Instapaper,
+    Omnivore,
     Raindrop
 }

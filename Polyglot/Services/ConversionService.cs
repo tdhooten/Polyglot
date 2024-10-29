@@ -16,6 +16,7 @@ public static class ConversionService
         {
             "GoodLinks" => ImportGoodlinks(stream),
             "Instapaper" => ImportInstapaper(stream),
+            "Omnivore" => ImportOmnivore(stream),
             "Raindrop" => ImportRaindrop(stream),
             _ => processedLinks
         };
@@ -82,6 +83,28 @@ public static class ConversionService
                 processedLink.Archived = true;
             else if (importedLink.Folder != "Unread")
                 processedLink.Tags.Add(importedLink.Folder);
+
+            yield return processedLink;
+        }
+    }
+
+    private static IEnumerable<MasterModel> ImportOmnivore(Stream stream)
+    {
+        IEnumerable<OmnivoreImportModel> importedLinks =
+                JsonSerializer.Deserialize<IEnumerable<OmnivoreImportModel>>(stream) ?? [];
+
+        foreach (OmnivoreImportModel importedLink in importedLinks)
+        {
+            var processedLink = new MasterModel
+            {
+                DatePublished = importedLink.publishedAt,
+                DateSaved = importedLink.savedAt,
+                Tags = [.. importedLink.labels],
+                Title = importedLink.title,
+                Url = importedLink.url
+            };
+
+            if (importedLink.state == "Archived") processedLink.Archived = true;
 
             yield return processedLink;
         }
@@ -174,11 +197,11 @@ public static class ConversionService
 
     private static byte[] ExportOmnivore(IEnumerable<MasterModel> processedLinks)
     {
-        List<OmnivoreModel> outputLinks = [];
+        List<OmnivoreExportModel> outputLinks = [];
 
         foreach (MasterModel link in processedLinks)
         {
-            var outputLink = new OmnivoreModel
+            var outputLink = new OmnivoreExportModel
             {
                 url = link.Url
             };

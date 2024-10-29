@@ -1,6 +1,6 @@
 ﻿namespace Polyglot.Models;
 
-public class OmnivoreImportModel
+public class OmnivoreInputModel
 {
     public List<string> labels { get; set; } = new();
     public DateTime publishedAt { get; set; }

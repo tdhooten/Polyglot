@@ -90,10 +90,10 @@ public static class ConversionService
 
     private static IEnumerable<MasterModel> ImportOmnivore(Stream stream)
     {
-        IEnumerable<OmnivoreImportModel> importedLinks =
-                JsonSerializer.Deserialize<IEnumerable<OmnivoreImportModel>>(stream) ?? [];
+        IEnumerable<OmnivoreInputModel> importedLinks =
+                JsonSerializer.Deserialize<IEnumerable<OmnivoreInputModel>>(stream) ?? [];
 
-        foreach (OmnivoreImportModel importedLink in importedLinks)
+        foreach (OmnivoreInputModel importedLink in importedLinks)
         {
             var processedLink = new MasterModel
             {
@@ -197,11 +197,11 @@ public static class ConversionService
 
     private static byte[] ExportOmnivore(IEnumerable<MasterModel> processedLinks)
     {
-        List<OmnivoreExportModel> outputLinks = [];
+        List<OmnivoreOutputModel> outputLinks = [];
 
         foreach (MasterModel link in processedLinks)
         {
-            var outputLink = new OmnivoreExportModel
+            var outputLink = new OmnivoreOutputModel
             {
                 url = link.Url
             };

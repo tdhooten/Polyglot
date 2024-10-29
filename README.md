@@ -62,3 +62,19 @@ When **exporting** from Raindrop.io, **the collection assigned to each item will
 ### Raindrop.io Import Instructions
 
 Navigate to the Settings page of the Raindrop.io web app and then choose the Import tab on the sidebar. After uploading the "raindrop.csv" file provided by this app, you will be given the option to either import everything, import only new items, or start from scratch by removing all existing links in your account and retaining only the imported items. Because each of these processes is irreversible, **users are highly encouraged to test the file conversion and import process using a dummy account before doing so on their permanent account**.
+
+## Readwise Reader
+
+### Readwise Reader Limitations
+
+Readwise Reader has many excellent features and organizational tools; however, currently their CSV importer only support URLs, titles, timestamps, and unread/archive status. Therefore this tool currently has the following limitations when **importing** into Readwise Reader:
+
+* Archived/read items will be archived in Readwise Reader
+* Unread items will be sent to the inbox in Readwise Reader
+* **Stars/favorites as well as tags on all items will be ignored**
+
+Readwise has a much more robust export function, which this tool intends to support in the future.
+
+### Readwise Reader Import Instructions
+
+Navigate to the main page of the Reader web app. Click the plus icon on the top right of the sidebar, then choose "Upload" and select the "readwise.csv" file provided by this app. Because this process is irreversible, **users are highly encouraged to test the file conversion and import process using a dummy account before doing so on their permanent account**.

@@ -39,13 +39,7 @@ Nvigate to the Settings page of the Instapaper web app and scroll down until you
 
 ## Omnivore
 
-### Omnivore Limitations
-
-Omnivore supports tags, but not folders or favorites. In addition, **there is currently no built-in way to export links from Omnivore at all**, and so this app supports it only as a target format coming from other read-it-later services.
-
-### Omnivore Import Instructions
-
-In the Omnivore **web** app (mobile apps currently do not support importing files), click the yellow "Add" button at the bottom of the sidebar, then navigate to the "Import" tab and upload the "omnivore.csv" file provided by this app. Because this process is irreversible, **users are highly encouraged to test the file conversion and import process using a dummy account before doing so on their permanent account**.
+Omnivore is no longer an actively developed project; however, this tool will continue to support converting Omnivore exports to other read-it-later formats.
 
 ## Raindrop.io
 

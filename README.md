@@ -65,8 +65,6 @@ Navigate to the Settings page of the Raindrop.io web app and then choose the Imp
 
 Readwise Reader has many excellent features and organizational tools; however, currently their CSV importer only support URLs, titles, timestamps, and unread/archive status. Therefore this tool currently has the following limitations when **importing** into Readwise Reader:
 
-* Archived/read items will be archived in Readwise Reader
-* Unread items will be sent to the inbox in Readwise Reader
 * **Stars/favorites as well as tags on all items will be ignored**
 
 Readwise has a much more robust export function, which this tool intends to support in the future.

@@ -8,6 +8,8 @@ Ensure that the latest .NET 8 SDK is installed on the host system. Then simply c
 
 **Please be aware that each read-it-later service has its own particular limitations**. These are detailed below, along with instructions on how to properly import the file provided by this app.
 
+Finally, **this tool does not transfer highlights between read-it-later services**. If you wish to preserve your highlights when migrating away from a service, please back them up separately.
+
 ## GoodLinks
 
 ### GoodLinks Limitations

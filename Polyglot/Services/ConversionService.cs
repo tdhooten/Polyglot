@@ -90,14 +90,10 @@ public static class ConversionService
 
     private static IEnumerable<MasterModel> ImportOmnivore(Stream stream)
     {
-        IEnumerable<OmnivoreInputModel> importedLinks =
-                JsonSerializer.Deserialize<IEnumerable<OmnivoreInputModel>>(stream) ?? [];
-
-        foreach (OmnivoreInputModel importedLink in importedLinks)
+        foreach (OmnivoreInputModel importedLink in JsonSerializer.Deserialize<IEnumerable<OmnivoreInputModel>>(stream) ?? [])
         {
             var processedLink = new MasterModel
             {
-                DatePublished = importedLink.publishedAt,
                 DateSaved = importedLink.savedAt,
                 Tags = [.. importedLink.labels],
                 Title = importedLink.title,

@@ -3,7 +3,6 @@
 public class OmnivoreInputModel
 {
     public List<string> labels { get; set; } = new();
-    public DateTime publishedAt { get; set; }
     public DateTime savedAt { get; set; }
     public string state { get; set; } = String.Empty;
     public string title { get; set; } = String.Empty;

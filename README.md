@@ -1,6 +1,6 @@
 # Polyglot
 
-A simple Blazor app which converts libraries of saved links between the native formats of various read-it-later services. Currently supports [GoodLinks](https://goodlinks.app/), [Instapaper](https://www.instapaper.com/), [Omnivore](https://omnivore.app/), and [Raindrop.io](https://raindrop.io/).
+A simple Blazor app which converts libraries of saved links between the native formats of various read-it-later services. Currently supports [GoodLinks](https://goodlinks.app/), [Instapaper](https://www.instapaper.com/), [Omnivore](https://omnivore.app/), [Raindrop.io](https://raindrop.io/), and [Readwise Reader](https://readwise.io/read).
 
 ## General Usage
 

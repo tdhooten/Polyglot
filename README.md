@@ -24,16 +24,9 @@ Navigate to `File->Import->GoodLinks` (on macOS) or `Settings->Import->GoodLinks
 
 ### Instapaper Limitations
 
-Instapaper's organizational tools are extremely limited. First of all it does not support tags; instead, it uses folders, with each saved link being able to live in only one folder at a time. In addition, archived links cannot be assigned to any folder at all. Instapaper *does* support "Likes" which corresponds to "Stars" or "Favorites" in other apps; however, Instapaper's import tool uses the same field for "Liked" as it does for "Folder" and "Archive", and only one value can be assigned to that field per link. This makes it extremely impractical to make use of the "Liked" category when importing items.
+Instapaper's organizational tools have become quite robust. However, although Instapaper *does* support "Likes" (which corresponds to "Stars" or "Favorites" in other apps), Instapaper's import tool uses the same field for "Liked" as it does for "Archive", and only one value can be assigned to that field per link. Therefore, this tool has the following constraint when **importing** into Instapaper:
 
-Given these considerable constraints, this tool has elected to make the following decisions when **importing** into Instapaper:
-
-* Archived/read items will be sent to the Archive folder in Instapaper (**tags will be ignored**)
-* Unread items with at least one tag will be sent to a folder in Instapaper equivalent to the **first** tag in GoodLinks (**all other tags will be ignored**)
-* All other unread items (i.e. those without tags) will be sent to the Home (i.e. "Unread") folder in Instapaper
 * **Stars/favorites on items will be ignored** (users are free to manually mark these links as "Liked" in Instapaper after import)
-
-When **exporting** from Instapaper, if a link has been assigned a folder in Instapaper then the folder name will be assigned as a tag to that link.
 
 ### Instapaper Import Instructions
 

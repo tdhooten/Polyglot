@@ -2,17 +2,17 @@
 
 A simple Blazor app which converts libraries of saved links between the native formats of various read-it-later services. Currently supports [GoodLinks](https://goodlinks.app/), [Instapaper](https://www.instapaper.com/), [Omnivore](https://omnivore.app/), [Raindrop.io](https://raindrop.io/), and [Readwise Reader](https://readwise.io/read).
 
-## General Usage
+## Instructions
 
-### Docker
+### Installation
 
+#### Docker
 Ensure you have Docker installed and running on your system, then clone into the repo and firdt build the app by running `docker build . -t polyglot`, then start the app by running `docker run -p 8080:8080 polyglot`. Finally, navigate to `http://localhost:8080` in your browser.
 
-### .NET SDK
+#### Native
+If you wish to build thenaop natively rather than using Docker, ensure that the latest [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download) is installed on the host system then clone into the repo and execute `dotnet run --project Polyglot` from the project directory. Navigate to the URL indicated in the `dotnet run` command output.
 
-Ensure that the latest .NET 8 SDK is installed on the host system, then clone into the repo and execute `dotnet run --project Polyglot` from the project directory. Navigate to the URL indicated in the `dotnet run` command output.
-
-### Instructions
+### Usage
 After navigating to the local URL, you will be presented with a simple interface allowing you to choose the input format (i.e. your current read-it-later service), the output format (i.e. the read-it-later service you wish to import your library into), and finally the input file itself. After uploading your input file, the exported result of the format conversion process will immediately be available in the default download directory of your current browser.
 
 **Please be aware that each read-it-later service has its own particular limitations**. These are detailed below, along with instructions on how to properly import the file provided by this app.

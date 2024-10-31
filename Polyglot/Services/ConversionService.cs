@@ -27,7 +27,6 @@ public static class ConversionService
         {
             "GoodLinks" => ExportGoodlinks(processedLinks),
             "Instapaper" => ExportInstapaper(processedLinks),
-            "Omnivore" => ExportOmnivore(processedLinks),
             "Raindrop" => ExportRaindrop(processedLinks),
             "Readwise" => ExportReadwise(processedLinks),
             _ => outputFile
@@ -83,6 +82,9 @@ public static class ConversionService
                 processedLink.Archived = true;
             else if (importedLink.Folder != "Unread")
                 processedLink.Tags.Add(importedLink.Folder);
+
+            if (!String.IsNullOrEmpty(importedLink.Tags))
+                processedLink.Tags = [.. importedLink.Tags.Split(',', StringSplitOptions.TrimEntries)];
 
             yield return processedLink;
         }
@@ -148,8 +150,9 @@ public static class ConversionService
             };
 
             if (link.Archived) outputLink.Folder = "Archive";
-            else if (link.Tags.Count != 0) outputLink.Folder = link.Tags[0];
             else outputLink.Folder = "Unread";
+
+            if (link.Tags.Count != 0) outputLink.Tags = String.Join(",", link.Tags);
 
             var createdUtc = new DateTimeOffset(link.DateSaved);
             outputLink.Timestamp = createdUtc.ToUnixTimeSeconds();
@@ -189,37 +192,6 @@ public static class ConversionService
         }
 
         return JsonSerializer.SerializeToUtf8Bytes(outputLinks);
-    }
-
-    private static byte[] ExportOmnivore(IEnumerable<MasterModel> processedLinks)
-    {
-        List<OmnivoreOutputModel> outputLinks = [];
-
-        foreach (MasterModel link in processedLinks)
-        {
-            var outputLink = new OmnivoreOutputModel
-            {
-                url = link.Url
-            };
-
-            var createdUtc = new DateTimeOffset(link.DateSaved);
-            outputLink.saved_at = createdUtc.ToUnixTimeMilliseconds().ToString();
-
-            if (link.Archived) outputLink.state = "ARCHIVED";
-
-            if (link.Tags.Count != 0)
-                outputLink.labels = $"[{String.Join(",", link.Tags.Select(i => $"\"{i}\""))}]";
-
-            outputLinks.Add(outputLink);
-        }
-
-        using var outputStream = new MemoryStream();
-        using var writer = new StreamWriter(outputStream);
-        using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
-        csvWriter.WriteRecords(outputLinks);
-        csvWriter.Flush();
-
-        return outputStream.ToArray();
     }
 
     private static byte[] ExportRaindrop(IEnumerable<MasterModel> processedLinks)

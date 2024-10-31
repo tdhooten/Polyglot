@@ -4,6 +4,13 @@ A simple Blazor app which converts libraries of saved links between the native f
 
 ## General Usage
 
+### Docker
+
+Ensure you have Docker installed. Use the provided Dockerfile to build the app by running `docker build -t polyglot .`.
+Now you can run the app with `docker run -p 8080:8080 polyglot`. You can then access the app at `http://localhost:8080`.
+
+### Locally
+
 Ensure that the latest .NET 8 SDK is installed on the host system. Then simply clone into the repo and execute `dotnet run --project Polyglot` from the project directory. Navigate to the URL indicated in the `dotnet run` command output, and you will be presented with a simple interface allowing you to choose the input format (i.e. your current read-it-later service), the output format (i.e. the read-it-later service you wish to import your library into), and finally the input file itself. After uploading your input file, the exported result of the format conversion process will immediately be available in the default download directory of your current browser.
 
 **Please be aware that each read-it-later service has its own particular limitations**. These are detailed below, along with instructions on how to properly import the file provided by this app.

@@ -7,7 +7,7 @@ A simple Blazor app which converts libraries of saved links between the native f
 ### Installation
 
 #### Docker
-Ensure you have Docker installed and running on your system, then clone into the repo and firdt build the app by running `docker build . -t polyglot`, then start the app by running `docker run -p 8080:8080 polyglot`. Finally, navigate to `http://localhost:8080` in your browser.
+Ensure you have Docker installed and running on your system, then clone into the repo and first build the app by running `docker build . -t polyglot`, then start the app by running `docker run -p 8080:8080 polyglot`. Finally, navigate to `http://localhost:8080` in your browser.
 
 #### Native
 If you wish to build the app natively rather than using Docker, ensure that the latest [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download) is installed on the host system, then clone into the repo and execute `dotnet run --project Polyglot` from the project directory. Navigate to the URL indicated in the `dotnet run` command output.

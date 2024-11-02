@@ -4,6 +4,10 @@ A simple Blazor app which converts libraries of saved links between the native f
 
 ## General Usage
 
+### Web App
+
+The app is [publically available](https://polyglot-hqbpg6f7hwdsgphd.eastus2-01.azurewebsites.net/), however it is hosted on a free plan with limited resources so availability is not guaranteed.
+
 ### Docker
 
 Ensure you have Docker installed and running on your system, then clone into the repo and build the app by running `docker build -t polyglot .`, then start the app by running `docker run -p 8080:8080 polyglot`. You can then access the app by navigating to `http://localhost:8080` in your browser.

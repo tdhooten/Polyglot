@@ -7,12 +7,12 @@ namespace Polyglot.Services;
 
 public static class ConversionService
 {
-    public static Stream ConvertFile(Stream stream, string inputFormat, string outputFormat)
+    public static IEnumerable<MasterModel> ConvertInputFile(Stream stream, string inputFormat)
     {
         stream.Position = 0;
         IEnumerable<MasterModel> processedLinks = [];
 
-        processedLinks = inputFormat switch
+        return inputFormat switch
         {
             "GoodLinks" => ImportGoodlinks(stream),
             "Instapaper" => ImportInstapaper(stream),
@@ -20,7 +20,10 @@ public static class ConversionService
             "Raindrop" => ImportRaindrop(stream),
             _ => processedLinks
         };
+    }
 
+    public static Stream GenerateOutputFile(IEnumerable<MasterModel> processedLinks, string outputFormat)
+    {
         byte[] outputFile = [];
 
         outputFile = outputFormat switch
@@ -39,10 +42,7 @@ public static class ConversionService
     {
         var baseDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 
-        IEnumerable<GoodLinksModel> importedLinks =
-                JsonSerializer.Deserialize<IEnumerable<GoodLinksModel>>(stream) ?? [];
-
-        foreach (GoodLinksModel importedLink in importedLinks)
+        foreach (GoodLinksModel importedLink in JsonSerializer.Deserialize<IEnumerable<GoodLinksModel>>(stream) ?? [])
         {
             var processedLink = new MasterModel
             {
@@ -67,9 +67,7 @@ public static class ConversionService
         using var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture);
 
         // Todo: check for valid headers
-        IEnumerable<InstapaperModel> importedLinks = csvReader.GetRecords<InstapaperModel>();
-
-        foreach (InstapaperModel importedLink in importedLinks)
+        foreach (InstapaperModel importedLink in csvReader.GetRecords<InstapaperModel>())
         {
             var processedLink = new MasterModel
             {
@@ -114,9 +112,7 @@ public static class ConversionService
         using var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture);
 
         // Todo: check for valid headers
-        IEnumerable<RaindropModel> importedLinks = csvReader.GetRecords<RaindropModel>();
-
-        foreach (RaindropModel importedLink in importedLinks)
+        foreach (RaindropModel importedLink in csvReader.GetRecords<RaindropModel>())
         {
             var processedLink = new MasterModel
             {

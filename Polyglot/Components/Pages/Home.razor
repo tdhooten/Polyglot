@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using Polyglot.Models
 
 @inject IHxMessengerService Messenger
 @inject IJSRuntime JsRuntime
@@ -36,13 +37,11 @@
                       NullText="-select format-"
                       NullDataText="Loading options..." />
             <p />
+            <HxInputFile Label="Upload File" Accept=".csv, .json" OnChange="ConvertFile" MaxFileSize="10000000" Multiple="true" />
             @if (_fileUploading)
             {
+                <p />
                 <HxSpinner Color="ThemeColor.Primary" />
-            }
-            else
-            {
-                <HxInputFile Label="Upload File" Accept=".csv, .json" OnChange="ConvertFile" MaxFileSize="10000000" Multiple="false" />
             }
         </div>
         <div class="col-sm" />
@@ -64,7 +63,7 @@
         _outputFormats = Enum.GetValues(typeof(OutputFormats)).Cast<OutputFormats>().Select(v => v.ToString());
     }
 
-    private async Task ConvertFile(InputFileChangeEventArgs e)
+    private async Task ConvertFile(InputFileChangeEventArgs args)
     {
         if (String.IsNullOrEmpty(_inputFormat))
         {
@@ -89,26 +88,48 @@
             _ => _fileName
         };
 
+        List<MasterModel> processedLinks = new();
+
         _fileUploading = true;
 
-        foreach (IBrowserFile file in e.GetMultipleFiles(1))
+        foreach (IBrowserFile file in args.GetMultipleFiles(args.FileCount))
         {
             try
             {
-                using MemoryStream stream = new();
+                await using MemoryStream stream = new();
                 await file.OpenReadStream(maxAllowedSize: 10000000).CopyToAsync(stream);
-                Stream result = ConversionService.ConvertFile(stream, _inputFormat, _outputFormat);
-
-                using var streamRef = new DotNetStreamReference(stream: result);
-                await JsRuntime.InvokeVoidAsync("downloadFileFromStream", _fileName, streamRef);
-
-                Messenger.AddInformation($"Successfully converted file from {_inputFormat} to {_outputFormat} format.");
+                processedLinks.AddRange(ConversionService.ConvertInputFile(stream, _inputFormat));
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex, ex.Message);
-                Messenger.AddError($"Error converting file from {_inputFormat} to {_outputFormat} format!");
+                Messenger.AddError($"Error reading file {file.Name}!");
+                _fileUploading = false;
+                return;
             }
+        }
+
+        if (processedLinks.Count == 0)
+        {
+            Messenger.AddError("No links found in the uploaded file(s)!");
+            _fileUploading = false;
+            return;
+        }
+
+        try
+        {
+            var result = ConversionService.GenerateOutputFile(processedLinks, _outputFormat);
+            using var streamRef = new DotNetStreamReference(stream: result);
+            await JsRuntime.InvokeVoidAsync("downloadFileFromStream", _fileName, streamRef);
+
+            if (args.FileCount > 1) Messenger.AddInformation($"Successfully converted {args.FileCount} files from {_inputFormat} to {_outputFormat} format.");
+            else Messenger.AddInformation($"Successfully converted file from {_inputFormat} to {_outputFormat} format.");
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, ex.Message);
+            if (args.FileCount > 1) Messenger.AddError($"Error converted files from {_inputFormat} to {_outputFormat} format!");
+            else Messenger.AddError($"Error converted file(s) from {_inputFormat} to {_outputFormat} format!");
         }
 
         _fileUploading = false;

@@ -6,7 +6,7 @@ A simple Blazor app which converts libraries of saved links between the native f
 
 ### Web App
 
-The app has [a public instance](https://polyglot-hqbpg6f7hwdsgphd.eastus2-01.azurewebsites.net/), however it is hosted on a free plan with limited resources so availability is not guaranteed.
+The app has a [public instance](https://polyglot-hqbpg6f7hwdsgphd.eastus2-01.azurewebsites.net/), however it is hosted on a free plan with limited resources so availability is not guaranteed.
 
 ### Local Installation
 

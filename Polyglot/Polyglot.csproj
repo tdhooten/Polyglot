@@ -8,7 +8,7 @@
 
     <ItemGroup>
         <PackageReference Include="CsvHelper" Version="33.0.1" />
-        <PackageReference Include="Havit.Blazor.Components.Web.Bootstrap" Version="4.6.19" />
+        <PackageReference Include="Havit.Blazor.Components.Web.Bootstrap" Version="4.6.20" />
     </ItemGroup>
 
 </Project>

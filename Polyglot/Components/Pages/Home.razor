@@ -51,8 +51,8 @@
 @code {
     private string _fileName = String.Empty;
     private bool _fileUploading;
-    private IEnumerable<string> _inputFormats = Enumerable.Empty<string>();
-    private IEnumerable<string> _outputFormats = Enumerable.Empty<string>();
+    private IEnumerable<string> _inputFormats = [];
+    private IEnumerable<string> _outputFormats = [];
     private string? _inputFormat;
     private string? _outputFormat;
 
@@ -88,7 +88,7 @@
             _ => _fileName
         };
 
-        List<MasterModel> processedLinks = new();
+        List<MasterModel> processedLinks = [];
 
         _fileUploading = true;
 
@@ -118,7 +118,7 @@
 
         try
         {
-            var result = ConversionService.GenerateOutputFile(processedLinks, _outputFormat);
+            Stream result = ConversionService.GenerateOutputFile(processedLinks, _outputFormat);
             using var streamRef = new DotNetStreamReference(stream: result);
             await JsRuntime.InvokeVoidAsync("downloadFileFromStream", _fileName, streamRef);
 

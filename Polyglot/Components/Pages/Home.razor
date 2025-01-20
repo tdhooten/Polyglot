@@ -128,8 +128,8 @@
         catch (Exception ex)
         {
             Logger.LogError(ex, ex.Message);
-            if (args.FileCount > 1) Messenger.AddError($"Error converted files from {_inputFormat} to {_outputFormat} format!");
-            else Messenger.AddError($"Error converted file(s) from {_inputFormat} to {_outputFormat} format!");
+            if (args.FileCount > 1) Messenger.AddError($"Error converting files from {_inputFormat} to {_outputFormat} format!");
+            else Messenger.AddError($"Error converting file from {_inputFormat} to {_outputFormat} format!");
         }
 
         _fileUploading = false;
